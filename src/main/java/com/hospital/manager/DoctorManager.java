@@ -9,6 +9,32 @@ import java.util.Scanner;
 public class DoctorManager {
     private final Scanner scanner = new Scanner(System.in);
 
+    public void showMenu() {
+        int currentDoctorId = getDoctorIdForCurrentUser();
+        if (currentDoctorId == -1) {
+            System.out.println("Could not find a doctor profile for your user account.");
+            return;
+        }
+
+        while (true) {
+            System.out.println("\n--- Doctor Dashboard ---");
+            System.out.println("1. View My Appointments");
+            System.out.println("2. Update Appointment Notes");
+            System.out.println("0. Logout");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1: viewMyAppointments(currentDoctorId); break;
+                case 2: updateAppointment(currentDoctorId); break;
+                case 0: return;
+                default: System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
     private int getDoctorIdForCurrentUser() {
         String sql = "SELECT doctor_id FROM doctors WHERE user_id = ?";
         try (Connection conn = DatabaseHelper.getConnection();
