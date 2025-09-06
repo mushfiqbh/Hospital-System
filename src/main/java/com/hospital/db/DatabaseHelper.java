@@ -17,4 +17,15 @@ public class DatabaseHelper {
         }
         return DriverManager.getConnection(DB_URL);
     }
+
+    public static void createTables() {
+        try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
+            for (String sql : DatabaseSeed.getCreateTableSQLs()) {
+                stmt.execute(sql);
+            }
+            System.out.println("All tables created or already exist.");
+        } catch (SQLException e) {
+            System.err.println("Error creating tables: " + e.getMessage());
+        }
+    }
 }
