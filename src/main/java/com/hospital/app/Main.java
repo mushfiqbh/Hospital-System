@@ -37,4 +37,14 @@ public class Main {
         }
         return false;
     }
+
+    private static void logout() {
+        currentUser = null;
+        System.out.println("\nYou have been logged out.");
+        System.out.println("==========================================");
+    }
+
+    public static Map<String, Object> getCurrentUser() {
+        return currentUser;
+    }
 }
