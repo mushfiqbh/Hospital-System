@@ -18,6 +18,12 @@ public class DatabaseHelper {
         return DriverManager.getConnection(DB_URL);
     }
 
+    public static void initializeDatabase() {
+        createTables();
+        createDefaultAdmin();
+        seedDatabase();
+    }
+
     public static void createTables() {
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
             for (String sql : DatabaseSeed.getCreateTableSQLs()) {
@@ -26,6 +32,23 @@ public class DatabaseHelper {
             System.out.println("All tables created or already exist.");
         } catch (SQLException e) {
             System.err.println("Error creating tables: " + e.getMessage());
+        }
+    }
+
+    private static void createDefaultAdmin() {
+        String checkSql = "SELECT COUNT(*) FROM users WHERE username = 'admin'";
+        String insertSql = "INSERT INTO users(username, password, role, name, contact) VALUES('admin', '1234', 'admin', 'Default Admin', 'N/A')";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(checkSql)) {
+
+            if (rs.next() && rs.getInt(1) == 0) {
+                stmt.execute(insertSql);
+                System.out.println("Default admin user (admin/1234) created successfully.");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error while creating default admin user: " + e.getMessage());
         }
     }
 
