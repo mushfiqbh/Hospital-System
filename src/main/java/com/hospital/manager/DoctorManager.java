@@ -50,4 +50,32 @@ public class DoctorManager {
             System.err.println("Error fetching appointments: " + e.getMessage());
         }
     }
+
+    private void updateAppointment(int doctorId) {
+        viewMyAppointments(doctorId);
+        System.out.print("\nEnter the Appointment ID to update: ");
+        int apptId = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Enter new notes for the appointment: ");
+        String notes = scanner.nextLine();
+        System.out.print("Update status (scheduled/completed/canceled): ");
+        String status = scanner.nextLine();
+
+        String sql = "UPDATE appointments SET notes = ?, status = ? WHERE appointment_id = ? AND doctor_id = ?";
+        try (Connection conn = DatabaseHelper.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, notes);
+            pstmt.setString(2, status);
+            pstmt.setInt(3, apptId);
+            pstmt.setInt(4, doctorId); // Ensure doctor can only update their own appointments
+            if (pstmt.executeUpdate() > 0) {
+                System.out.println("Appointment updated successfully!");
+            } else {
+                System.out.println("Appointment not found or you do not have permission to update it.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating appointment: " + e.getMessage());
+        }
+    }
 }
