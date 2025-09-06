@@ -28,4 +28,28 @@ public class DatabaseHelper {
             System.err.println("Error creating tables: " + e.getMessage());
         }
     }
+
+    private static void seedDatabase() {
+        String checkSql = "SELECT COUNT(*) FROM doctors";
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(checkSql)) {
+
+            if (rs.next() && rs.getInt(1) == 0) {
+                System.out.println("The database is empty. Would you like to add sample data? (yes/no)");
+                Scanner scanner = new Scanner(System.in);
+                String response = scanner.nextLine();
+
+                if (response.equalsIgnoreCase("yes")) {
+                    System.out.println("Inserting sample data...");
+                    for (String sql : DatabaseSeed.getSeedData()) {
+                        stmt.execute(sql);
+                    }
+                    System.out.println("Sample data seeded successfully.");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during database seeding: " + e.getMessage());
+        }
+    }
 }
