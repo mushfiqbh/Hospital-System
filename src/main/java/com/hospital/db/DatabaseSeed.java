@@ -1,8 +1,11 @@
 package com.hospital.db;
 
+/**
+ * Contains all the SQL statements for table creation and initial data seeding.
+ */
 public class DatabaseSeed {
     public static String[] getCreateTableSQLs() {
-        String[] createTableSQLs = {
+        return new String[]{
                 "CREATE TABLE IF NOT EXISTS users (" +
                         "    user_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "    username TEXT UNIQUE NOT NULL," +
@@ -56,30 +59,21 @@ public class DatabaseSeed {
                         "    FOREIGN KEY(appointment_id) REFERENCES appointments(appointment_id)" +
                         ");"
         };
-
-        return createTableSQLs;
     }
 
-
     public static String[] getSeedData() {
-        String[] seedData = {
+        return new String[]{
                 // ================== Users (10) ==================
-                "INSERT INTO users (username, password, role, name, contact) VALUES ('acc2', '1234', 'accountant', 'Linda Brown', '555-0125');",
-                "INSERT INTO users (username, password, role, name, contact) VALUES ('accounts1', '1234', 'accountant', 'David Chen', '555-0106');",
-                "INSERT INTO users (username, password, role, name, contact) VALUES ('reception1', '1234', 'receptionist', 'Sarah Wilson', '555-0105');",
-                "INSERT INTO users (username, password, role, name, contact) VALUES ('recep2', '1234', 'receptionist', 'Mark Taylor', '555-0124');",
-                "INSERT INTO users (username, password, role, name, contact) VALUES ('drlee', '1234', 'doctor', 'Dr. Benjamin Lee', '555-0102');",
-                "INSERT INTO users (username, password, role, name, contact) VALUES ('drsophia', '1234', 'doctor', 'Dr. Sophia Khan', '555-0107');",
-                "INSERT INTO users (username, password, role, name, contact) VALUES ('drcarter', '1234', 'doctor', 'Dr. Emily Carter', '555-0101');",
-                "INSERT INTO users (username, password, role, name, contact) VALUES ('drmichael', '1234', 'doctor', 'Dr. Michael Brown', '555-0108');",
-                "INSERT INTO users (username, password, role, name, contact) VALUES ('drayesha', '1234', 'doctor', 'Dr. Ayesha Rahman', '555-0113');",
+                "INSERT INTO users (username, password, role, name, contact) VALUES ('accounts', '1234', 'accountant', 'David Chen', '555-0106');",
+                "INSERT INTO users (username, password, role, name, contact) VALUES ('reception', '1234', 'receptionist', 'Sarah Wilson', '555-0105');",
+                "INSERT INTO users (username, password, role, name, contact) VALUES ('dr.lee', '1234', 'doctor', 'Dr. Benjamin Lee', '555-0102');",
+                "INSERT INTO users (username, password, role, name, contact) VALUES ('dr.emily', '1234', 'doctor', 'Dr. Emily Carter', '555-0101');",
+                "INSERT INTO users (username, password, role, name, contact) VALUES ('dr.ayesha', '1234', 'doctor', 'Dr. Ayesha Rahman', '555-0113');",
 
                 // ================== Doctors (5) ==================
-                "INSERT INTO doctors (user_id, name, specialization, contact, consultation_fee, availability) VALUES (6, 'Dr. Benjamin Lee', 'Pediatrician', '555-0102', 150.00, 'Mon,Wed,Fri 10am-6pm');",
-                "INSERT INTO doctors (user_id, name, specialization, contact, consultation_fee, availability) VALUES (7, 'Dr. Sophia Khan', 'Dermatologist', '555-0107', 180.00, 'Tue-Thu 9am-3pm');",
-                "INSERT INTO doctors (user_id, name, specialization, contact, consultation_fee, availability) VALUES (8, 'Dr. Emily Carter', 'Cardiologist', '555-0101', 250.00, 'Mon-Fri 9am-5pm');",
-                "INSERT INTO doctors (user_id, name, specialization, contact, consultation_fee, availability) VALUES (9, 'Dr. Michael Brown', 'Orthopedic', '555-0108', 220.00, 'Mon-Sat 11am-7pm');",
-                "INSERT INTO doctors (user_id, name, specialization, contact, consultation_fee, availability) VALUES (10, 'Dr. Ayesha Rahman', 'Neurologist', '555-0113', 300.00, 'Sun-Thu 10am-4pm');",
+                "INSERT INTO doctors (user_id, name, specialization, contact, consultation_fee, availability) VALUES (4, 'Dr. Benjamin Lee', 'Pediatrician', '555-0102', 150.00, 'Mon,Wed,Fri 10am-6pm');",
+                "INSERT INTO doctors (user_id, name, specialization, contact, consultation_fee, availability) VALUES (5, 'Dr. Emily Carter', 'Cardiologist', '555-0101', 250.00, 'Mon-Fri 9am-5pm');",
+                "INSERT INTO doctors (user_id, name, specialization, contact, consultation_fee, availability) VALUES (6, 'Dr. Ayesha Rahman', 'Neurologist', '555-0113', 300.00, 'Sun-Thu 10am-4pm');",
 
                 // ================== Patients (10) ==================
                 "INSERT INTO patients (name, gender, date_of_birth, contact, address) VALUES ('John Smith', 'Male', '1985-05-20', '555-0103', '123 Maple St');",
@@ -97,13 +91,13 @@ public class DatabaseSeed {
                 "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (1, 1, '2025-08-28', '10:30:00', 'scheduled', 'Follow-up checkup', 101);",
                 "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (2, 2, '2025-08-28', '11:00:00', 'scheduled', 'Pediatric fever consultation', 102);",
                 "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (3, 3, '2025-08-29', '12:00:00', 'scheduled', 'Skin rash issue', 103);",
-                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (4, 4, '2025-08-29', '09:30:00', 'scheduled', 'Knee pain', 104);",
-                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (5, 5, '2025-08-30', '10:00:00', 'completed', 'Neurology consultation done', 105);",
-                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (6, 1, '2025-08-30', '13:30:00', 'canceled', 'Patient absent', NULL);",
-                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (7, 2, '2025-08-31', '11:15:00', 'scheduled', 'Gynecology checkup', 106);",
-                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (8, 3, '2025-08-31', '14:45:00', 'scheduled', 'ENT throat pain', 107);",
-                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (9, 4, '2025-09-01', '15:00:00', 'scheduled', 'Oncology follow-up', 108);",
-                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (10, 5, '2025-09-01', '16:15:00', 'scheduled', 'Urology consultation', 109);",
+                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (4, 1, '2025-08-29', '09:30:00', 'scheduled', 'Knee pain', 104);",
+                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (5, 2, '2025-08-30', '10:00:00', 'completed', 'Neurology consultation done', 105);",
+                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (6, 3, '2025-08-30', '13:30:00', 'canceled', 'Patient absent', NULL);",
+                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (7, 1, '2025-08-31', '11:15:00', 'scheduled', 'Gynecology checkup', 106);",
+                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (8, 2, '2025-08-31', '14:45:00', 'scheduled', 'ENT throat pain', 107);",
+                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (9, 3, '2025-09-01', '15:00:00', 'scheduled', 'Oncology follow-up', 108);",
+                "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, status, notes, prescription_code) VALUES (10, 1, '2025-09-01', '16:15:00', 'scheduled', 'Urology consultation', 109);",
 
                 // ================== Billing (10) ==================
                 "INSERT INTO billing (appointment_id, amount, payment_status, payment_method) VALUES (1, 250.00, 'unpaid', 'cash');",
@@ -117,7 +111,5 @@ public class DatabaseSeed {
                 "INSERT INTO billing (appointment_id, amount, payment_status, payment_method) VALUES (9, 350.00, 'paid', 'card');",
                 "INSERT INTO billing (appointment_id, amount, payment_status, payment_method) VALUES (10, 270.00, 'partial', 'mobile');"
         };
-
-        return seedData;
     }
 }
