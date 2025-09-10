@@ -1,6 +1,10 @@
 package com.hospital.app;
 
 import com.hospital.db.DatabaseHelper;
+import com.hospital.manager.AccountantManager;
+import com.hospital.manager.AdminManager;
+import com.hospital.manager.DoctorManager;
+import com.hospital.manager.ReceptionistManager;
 
 import java.sql.*;
 import java.util.*;
@@ -13,6 +17,28 @@ import java.util.*;
 public class Main {
     private static Map<String, Object> currentUser;
 
+    public static void main(String[] args) {
+        DatabaseHelper.initializeDatabase();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\n==========================================");
+        System.out.println("   Welcome to Hospital Management System  ");
+        System.out.println("==========================================");
+
+        boolean running = true;
+        while (running) {
+            if (currentUser == null) {
+                // If no user is logged in, show the login prompt
+                running = login(scanner);
+            } else {
+                // If a user is logged in, direct them to their respective manager/dashboard
+                dispatchToManager();
+                // After the user exits their dashboard, log them out
+                logout();
+            }
+        }
+        System.out.println("Application exited.");
+    }
 
     private static boolean login(Scanner scanner) {
         String selectedUsername = showUserSelection(scanner);
@@ -75,8 +101,7 @@ public class Main {
             System.err.println("Database error while fetching users: " + e.getMessage());
             return null;
         }
-}
-
+    }
 
     private static boolean authenticateUser(String username, String password) {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
@@ -101,6 +126,27 @@ public class Main {
             System.err.println("Login error: " + e.getMessage());
         }
         return false;
+    }
+
+    private static void dispatchToManager() {
+        String role = (String) currentUser.get("role");
+        switch (role) {
+            case "admin":
+                new AdminManager().showMenu();
+                break;
+            case "receptionist":
+                new ReceptionistManager().showMenu();
+                break;
+            case "doctor":
+                new DoctorManager().showMenu();
+                break;
+            case "accountant":
+                new AccountantManager().showMenu();
+                break;
+            default:
+                System.out.println("Your role does not have an assigned dashboard.");
+                break;
+        }
     }
 
     private static void logout() {
